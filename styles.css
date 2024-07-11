@@ -1,0 +1,143 @@
+body {
+    user-select: none;
+    background-color: #faf8ef;
+    font-weight: bold;
+    font-family: "Helvetica Neue", sans-serif;
+}
+
+div.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+td {
+    width: 95px;
+    height: 95px;
+    background-color: rgb(200, 191, 179);
+    border: rgb(182, 171, 159) 5px solid;
+    text-align: center;
+    font-size: 50px;
+    border-radius: 8px;
+    color: white;
+}
+
+td._2 {
+    color: rgb(116, 109, 101);
+    background-color: rgb(234, 227, 217);
+}
+
+td._4 {
+    color: rgb(116, 109, 101);
+    background-color: rgb(234, 223, 201);
+}
+
+td._8 {
+    background-color: #f2b179;
+}
+
+td._16 {
+    background-color: #f59563;
+}
+
+td._32 {
+    background-color: #f67c5f;
+}
+
+td._64 {
+    background-color: #f65e3b;
+}
+
+td._128 {
+    font-size: 40px;
+    background-color: #edc22e;
+}
+
+td._256 {
+    font-size: 40px;
+    background-color: #edc22e;
+}
+
+td._512 {
+    font-size: 40px;
+    background-color: #edc22e;
+}
+
+td._1024 {
+    font-size: 30px;
+    background-color: #edc22e;
+}
+
+td._2048 {
+    font-size: 30px;
+    background-color: #edc22e;
+}
+
+td._4096 {
+    font-size: 30px;
+    background-color: rgb(62, 61, 54);
+}
+
+table {
+    border: rgb(182, 171, 159) 5px solid;
+    background-color: rgb(182, 171, 159);
+    border-radius: 6px;
+}
+
+#logo {
+    background-color: transparent;
+    font-size: 77px;
+    color: #776e65;
+    display: block;
+    float: left;
+}
+
+#new-game {
+    background-color: #8f7a66;
+    color: #f9f6f2;
+    height: 40px;
+    width: 110px;
+    border-radius: 3px;
+    border: none;
+    font-size: 18px;
+    margin-right: -335px;
+    margin-top: -35px;
+    font-weight: bold;
+}
+
+#new-game:hover {
+    cursor: pointer;
+}
+
+#scores {
+    margin-top: -5px;
+    display: flex;
+    color: white;
+}
+
+#scores > div {
+    padding: 2px;
+    font-size: 25px;
+    text-align: center;
+    background-color: #bbada0;
+    border-radius: 3px;
+}
+
+#best-score {
+    margin-left: 5px;
+    width: 100px;
+}
+
+#current-score {
+    width: 100px;
+}
+
+.score-heading {
+    color: #eee4da;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.nav-item {
+    margin: 30px;
+}
