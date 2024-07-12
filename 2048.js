@@ -37,6 +37,10 @@ window.addEventListener('keydown', (event) => {
                 bestScoreElement.innerHTML = scoreTracker;
             }
 
+            if (is2048OnBoard() == true) {
+                alert('You have won by reaching the 2048 tile!');
+            }
+
             if (isGridFull() == false) {
                 console.log('Generating random tile.')
                 generateRandomTile();
@@ -128,7 +132,7 @@ function isGameFinished() {
 
             let current = document.getElementById(`(${i},${j})`).innerHTML;
             if (top == current || bottom == current || left == current || right == current) {
-                return false
+                return false;
             }
         }
     }
@@ -142,4 +146,30 @@ function isGridFull() {
         }
     }
     return true;
+}
+
+function is2048OnBoard() {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (document.getElementById(columns[i][j]).className == '_2048') {return true}
+        }
+    }
+    return false;
+}
+
+function changeScore(scoreToAdd) {
+    scoreTracker += scoreToAdd;
+    currentScoreElement.innerHTML = scoreTracker;
+}
+
+
+function move(direction) {
+    let arrayToConsider = [];
+    if (direction == 'ArrowDown' || direction == 'ArrowUp') {arrayToConsider = columns} 
+    else {arrayToConsider = rows}
+
+    for (let i = 0; i < 4; i++) {
+        let list = arrayToConsider[i].slice();
+        if (direction == 'ArrowUp' || direction == 'ArrowLeft') {list.reverse()}
+    }
 }
