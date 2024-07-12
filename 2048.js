@@ -1,14 +1,14 @@
-// Important components
+// Important components for reuse
 const currentScoreElement = document.querySelector('#score-display');
 const bestScoreElement = document.querySelector('#best-score-display');
 const newGameButton = document.querySelector('#new-game');
 
-// Important variables
+// Important variables to be used throughout the game
 let gameStarted = false;
 let scoreTracker = 0;
 let choices = ["_2", "_4"] 
 
-// Rows + Columns (4x4)
+// Rows and columns for the 4x4 grid in index.html
 const columns = [
     ['(0,0)', '(1,0)', '(2,0)', '(3,0)'],
     ['(0,1)', '(1,1)', '(2,1)', '(3,1)'],
@@ -58,6 +58,8 @@ window.addEventListener('keydown', (event) => {
     }
 })
 
+// All utility functions that need for the game logic to run.
+
 function startGame(first) {
     if (first == false) {clearBoard()}
     gameStarted = true;
@@ -98,7 +100,6 @@ function generateRandomTile(chosenClass) {
     else {tileClass = chosenClass}
     changeTile(`(${x},${y})`, tileClass);
 }
-
 
 function clearBoard() {
     document.querySelectorAll('td').forEach(square => {
@@ -163,6 +164,8 @@ function changeScore(scoreToAdd) {
     currentScoreElement.innerHTML = scoreTracker;
 }
 
+// Most important game logic is contained within these two functions
+
 function moveTilesWithoutMerge(list) {
     for (let j = 1; j < 4; j++) {
         let tileAtCurrentIndex = document.getElementById(list[j]);
@@ -171,6 +174,17 @@ function moveTilesWithoutMerge(list) {
         if (tileAtCurrentIndex.className.length == 0) {
             if (tileAtBeforeIndex.className.length > 0) {
                 changeTile(list[j], tileAtBeforeIndex.className);
+                if (j > 1) {
+                    changeTile(list[j-1], document.getElementById(list[j-2]).className);
+                    if (j > 2) {
+                        changeTile(list[j-2], document.getElementById(list[j-3]).className);
+                        changeTile(list[j-3], "");
+                    } else {
+                        changeTile(list[j-2], "");
+                    }
+                } else {
+                    changeTile(list[j-1], "");
+                }
             }
         }
     }
@@ -185,6 +199,20 @@ function move(direction) {
         let list = arrayToConsider[i].slice();
         if (direction == 'ArrowUp' || direction == 'ArrowLeft') {list.reverse()}
 
+        moveTilesWithoutMerge(list);
+        for (let j = 3; j > 0; j--) {
+            let tileAtCurrentIndex = document.getElementById(list[j]);
+            if (tileAtCurrentIndex.className != '') {
+
+                let tileAtBeforeIndex = document.getElementById(list[j-1])
+                if (tileAtBeforeIndex.className == tileAtCurrentIndex.className) {
+                    let sum = 2*parseInt(tileAtCurrentIndex.className.slice(1));
+                    changeScore(sum)
+                    changeTile(list[j], `_${sum}`);
+                    changeTile(list[j-1], '');
+                }
+            }
+        }
         moveTilesWithoutMerge(list);
     }
 }
