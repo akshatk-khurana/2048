@@ -32,12 +32,31 @@ window.addEventListener('keydown', (event) => {
     if (gameStarted == true) {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(event.key) != -1) {
             console.log(`${event.key} was pressed!`);
+            if (scoreTracker > parseInt(getBestScore())) {
+                localStorage.setItem("best", scoreTracker)
+                bestScoreElement.innerHTML = scoreTracker;
+            }
+
+            if (isGridFull() == false) {
+                console.log('Generating random tile.')
+                generateRandomTile();
+            } else {
+                console.log('Grid is full!')
+                if (isGameFinished() == true) {
+                    console.log('Game is finished!')
+                    gameStarted = false;
+                    alert('You lost!')
+                    startGame();
+                }
+            }
         }
     }
 })
 
 function startGame(first) {
+    if (first == false) {clearBoard()}
     gameStarted = true;
+    bestScoreElement.innerHTML = getBestScore();
     
     let tileClass = choices[Math.round(Math.random() * 1)];
     for (let i = 0; i < 2; i++) {generateRandomTile(tileClass)}
@@ -73,4 +92,54 @@ function generateRandomTile(chosenClass) {
     if (chosenClass == null) {tileClass = choices[Math.round(Math.random() * 1)]} 
     else {tileClass = chosenClass}
     changeTile(`(${x},${y})`, tileClass);
+}
+
+
+function clearBoard() {
+    document.querySelectorAll('td').forEach(square => {
+        square.className = '';
+        square.innerHTML = '';
+    });
+
+    gameStarted = false;
+    scoreTracker = 0;
+    currentScoreElement.innerHTML = 0;
+}
+
+function getBestScore() {
+    if (!localStorage.getItem("best")) {
+        localStorage.setItem("best", 0);
+        return 0
+    } else {return localStorage.getItem("best")}
+}
+
+function isGameFinished() {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            let top;
+            let bottom;
+            let left;
+            let right;
+
+            if (i != 0) {top = document.getElementById(`(${i-1},${j})`).innerHTML};
+            if (i != 3) {bottom = document.getElementById(`(${i+1},${j})`).innerHTML};
+            if (j != 0) {left = document.getElementById(`(${i},${j-1})`).innerHTML};
+            if (j != 3) {right = document.getElementById(`(${i},${j+1})`).innerHTML};
+
+            let current = document.getElementById(`(${i},${j})`).innerHTML;
+            if (top == current || bottom == current || left == current || right == current) {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+function isGridFull() {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (document.getElementById(columns[i][j]).className == '') {return false}
+        }
+    }
+    return true;
 }
