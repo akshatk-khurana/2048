@@ -32,6 +32,7 @@ window.addEventListener('keydown', (event) => {
     if (gameStarted == true) {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(event.key) != -1) {
             console.log(`${event.key} was pressed!`);
+            move(event.key);
             if (scoreTracker > parseInt(getBestScore())) {
                 localStorage.setItem("best", scoreTracker)
                 bestScoreElement.innerHTML = scoreTracker;
@@ -162,6 +163,18 @@ function changeScore(scoreToAdd) {
     currentScoreElement.innerHTML = scoreTracker;
 }
 
+function moveTilesWithoutMerge(list) {
+    for (let j = 1; j < 4; j++) {
+        let tileAtCurrentIndex = document.getElementById(list[j]);
+        let tileAtBeforeIndex = document.getElementById(list[j-1]);
+
+        if (tileAtCurrentIndex.className.length == 0) {
+            if (tileAtBeforeIndex.className.length > 0) {
+                changeTile(list[j], tileAtBeforeIndex.className);
+            }
+        }
+    }
+}
 
 function move(direction) {
     let arrayToConsider = [];
@@ -171,5 +184,7 @@ function move(direction) {
     for (let i = 0; i < 4; i++) {
         let list = arrayToConsider[i].slice();
         if (direction == 'ArrowUp' || direction == 'ArrowLeft') {list.reverse()}
+
+        moveTilesWithoutMerge(list);
     }
 }
